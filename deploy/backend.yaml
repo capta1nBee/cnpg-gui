@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cnpg-gui-backend
+  namespace: poyraz-system
+  labels:
+    app: cnpg-gui-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cnpg-gui-backend
+  template:
+    metadata:
+      labels:
+        app: cnpg-gui-backend
+    spec:
+      containers:
+      - name: backend
+        image: REPO/cnpg-gui-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: cnpg-gui-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnpg-gui-backend
+  namespace: poyraz-system
+spec:
+  selector:
+    app: cnpg-gui-backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

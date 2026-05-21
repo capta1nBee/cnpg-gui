@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cnpg-gui-db
+  namespace: poyraz-system
+  labels:
+    app: cnpg-gui-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cnpg-gui-db
+  template:
+    metadata:
+      labels:
+        app: cnpg-gui-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - configMapRef:
+            name: cnpg-gui-config
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: pgdata
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: cnpg-gui-db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cnpg-gui-db-pvc
+  namespace: poyraz-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnpg-gui-db
+  namespace: poyraz-system
+spec:
+  selector:
+    app: cnpg-gui-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
