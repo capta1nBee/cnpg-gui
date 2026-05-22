@@ -750,11 +750,11 @@ export default function ClusterDetail() {
                           <td className="text-right">
                              {!isViewer && (
                                <div className="flex items-center justify-end space-x-2">
-                                  {!isPrimary && (
+                                  {/* {!isPrimary && (
                                     <button onClick={() => handleFailover(podName)} className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-600 border border-blue-100 rounded-lg text-[10px] font-bold hover:bg-blue-100 transition-all" title="Graceful Switchover">
                                       <RefreshCw className="w-3 h-3 mr-1" /> Switchover
                                     </button>
-                                  )}
+                                  )} */}
                                   {isPrimary && (
                                     <button onClick={() => handleRestartInstance(podName)} className="inline-flex items-center px-2 py-1 bg-red-50 text-red-600 border border-red-100 rounded-lg text-[10px] font-bold hover:bg-red-100 transition-all" title="Force Failover (Pod Delete)">
                                       <Zap className="w-3 h-3 mr-1" /> Force Failover
@@ -1314,7 +1314,7 @@ export default function ClusterDetail() {
                    <div className="space-y-6">
                       <MetricBar label="CPU Limit" value="1.0 Core" percent={50} color="blue" />
                       <MetricBar label="Memory Limit" value="2.0 GiB" percent={65} color="indigo" />
-                      <MetricBar label="Current Connectionamespace" value="12 / 100" percent={12} color="emerald" />
+                      {/* <MetricBar label="Current Connectionamespace" value="12 / 100" percent={12} color="emerald" /> */}
                    </div>
                 </div>
                 <div className="enterprise-card p-6">

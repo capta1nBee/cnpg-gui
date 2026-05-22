@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { UserPlus, UserMinus, ShieldAlert, Trash2, MoreVertical, Mail, Search, RefreshCw, X } from 'lucide-react';
 import api from '../api/axios';
 import { useUI } from '../context/UIContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function UserList() {
   const [users, setUsers] = useState<any[]>([]);
+  const { user: currentUser } = useAuth();
   const [search, setSearch] = useState('');
   
   // Modal state
@@ -44,6 +46,11 @@ export default function UserList() {
 
   const handleAction = async (userId: string, action: string) => {
     if (action === 'toggle_status') {
+        const targetUser = users.find(u => u.id === userId);
+        if (targetUser && currentUser && targetUser.username === currentUser.username) {
+            toast('You cannot disable your own account', 'error');
+            return;
+        }
         const ok = await confirm({
             title: 'Change Status',
             message: 'Are you sure you want to change the status of this user?',
@@ -63,6 +70,11 @@ export default function UserList() {
 
 
     if (action === 'delete') {
+        const targetUser = users.find(u => u.id === userId);
+        if (targetUser && currentUser && targetUser.username === currentUser.username) {
+            toast('You cannot delete your own account', 'error');
+            return;
+        }
         const ok = await confirm({
             title: 'Delete User',
             message: 'Are you sure you want to permanently delete this user? This action cannot be undone.',
@@ -178,12 +190,30 @@ export default function UserList() {
 
                     <td className="text-right">
                       <div className="flex items-center justify-end space-x-1">
-                        <button onClick={() => handleAction(user.id, 'toggle_status')} title={user.status === 'active' ? 'Disable' : 'Enable'}
-                                className={`p-2 rounded-lg transition-all ${user.status === 'active' ? 'text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20' : 'text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'}`}>
+                        <button 
+                          onClick={() => handleAction(user.id, 'toggle_status')} 
+                          disabled={currentUser && user.username === currentUser.username}
+                          title={user.status === 'active' ? 'Disable' : 'Enable'}
+                          className={`p-2 rounded-lg transition-all ${
+                            currentUser && user.username === currentUser.username
+                              ? 'opacity-30 cursor-not-allowed text-gray-300'
+                              : user.status === 'active' 
+                              ? 'text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20' 
+                              : 'text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'
+                          }`}
+                        >
                           {user.status === 'active' ? <UserMinus className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
                         </button>
-                        <button onClick={() => handleAction(user.id, 'delete')} title="Delete User"
-                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                        <button 
+                          onClick={() => handleAction(user.id, 'delete')} 
+                          disabled={currentUser && user.username === currentUser.username}
+                          title="Delete User"
+                          className={`p-2 rounded-lg transition-colors ${
+                            currentUser && user.username === currentUser.username
+                              ? 'opacity-30 cursor-not-allowed text-gray-300'
+                              : 'text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20'
+                          }`}
+                        >
                           <Trash2 className="w-4 h-4" />
                         </button>
 

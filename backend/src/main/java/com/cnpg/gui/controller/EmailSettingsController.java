@@ -31,10 +31,17 @@ public class EmailSettingsController {
     }
 
     @PostMapping("/test")
-    public ResponseEntity<String> testConnection(@RequestBody EmailSettings settings) {
+    public ResponseEntity<String> testConnection(
+            @RequestBody EmailSettings settings,
+            @RequestParam(required = false) String toEmail) {
         try {
-            emailService.testConnection(settings);
-            return ResponseEntity.ok("Connection Successful");
+            if (toEmail != null && !toEmail.trim().isEmpty()) {
+                emailService.testConnectionAndSendEmail(settings, toEmail);
+                return ResponseEntity.ok("Test email sent successfully to " + toEmail);
+            } else {
+                emailService.testConnection(settings);
+                return ResponseEntity.ok("Connection Successful");
+            }
         } catch (Exception e) {
             log.error("Email connection test failed", e);
             return ResponseEntity.badRequest().body("Connection Failed: " + e.getMessage());

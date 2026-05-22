@@ -96,6 +96,32 @@ public class EmailService {
         mailSender.testConnection();
     }
 
+    public void testConnectionAndSendEmail(EmailSettings settings, String toEmail) throws MessagingException, java.io.UnsupportedEncodingException {
+        JavaMailSenderImpl mailSender = createMailSender(settings);
+        mailSender.testConnection();
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        helper.setFrom(settings.getFromEmail(), settings.getFromName());
+        helper.setTo(toEmail);
+        helper.setSubject("Test Email — Poyraz-CNPG SMTP Test");
+
+        String body = "<html><body style='font-family: Arial, sans-serif;'>" +
+                "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px;'>" +
+                "<h2 style='color: #2563eb;'>SMTP Test Successful!</h2>" +
+                "<p>Hello,</p>" +
+                "<p>This is a test email sent from the Poyraz-CNPG system to verify your SMTP settings.</p>" +
+                "<p>If you received this email, your email configuration is working correctly!</p>" +
+                "<p style='margin-top: 40px; font-size: 12px; color: #64748b;'>This email was sent automatically. Please do not reply.</p>" +
+                "</div>" +
+                "</body></html>";
+        helper.setText(body, true);
+
+        mailSender.send(message);
+        log.info("Test email sent successfully to {}", toEmail);
+    }
+
     private JavaMailSenderImpl createMailSender(EmailSettings settings) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(settings.getHost());

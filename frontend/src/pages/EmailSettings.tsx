@@ -19,6 +19,7 @@ export default function EmailSettings() {
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [testRecipient, setTestRecipient] = useState('');
   const { toast } = useUI();
 
   useEffect(() => {
@@ -30,6 +31,9 @@ export default function EmailSettings() {
       const res = await api.get('/settings/email');
       if (res.data) {
         setSettings(res.data);
+        if (res.data.fromEmail) {
+          setTestRecipient(res.data.fromEmail);
+        }
       }
     } catch (err) {
       console.error('Failed to fetch email settings', err);
@@ -54,7 +58,10 @@ export default function EmailSettings() {
   const handleTest = async () => {
     setTesting(true);
     try {
-      const res = await api.post('/settings/email/test', settings);
+      const url = testRecipient.trim() 
+        ? `/settings/email/test?toEmail=${encodeURIComponent(testRecipient.trim())}` 
+        : '/settings/email/test';
+      const res = await api.post(url, settings);
       toast(res.data || 'Connection test successful', 'success');
     } catch (err: any) {
       toast(err.response?.data || 'Connection test failed', 'error');
@@ -235,6 +242,36 @@ export default function EmailSettings() {
                 >
                     {settings.enabled ? 'Disable Service' : 'Enable Service'}
                 </button>
+            </div>
+
+            <div className="enterprise-card p-6">
+                <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                    <Shield className="w-4 h-4 mr-2 text-blue-500" /> Test SMTP Delivery
+                </h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+                    Verify email delivery by sending a test message to a specific recipient.
+                </p>
+                <div className="space-y-3">
+                    <div>
+                        <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Recipient Email</label>
+                        <input 
+                            type="email" 
+                            placeholder="test@example.com" 
+                            value={testRecipient} 
+                            onChange={e => setTestRecipient(e.target.value)} 
+                            className="enterprise-input text-xs"
+                        />
+                    </div>
+                    <button 
+                        type="button"
+                        onClick={handleTest}
+                        disabled={testing || !testRecipient}
+                        className="w-full flex items-center justify-center px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-xl text-xs font-bold shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-all active:scale-95 disabled:opacity-50"
+                    >
+                        {testing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Mail className="w-4 h-4 mr-2 text-gray-400" />}
+                        Send Test Email
+                    </button>
+                </div>
             </div>
 
             <div className="enterprise-card p-6 border-l-4 border-l-amber-500">
