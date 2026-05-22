@@ -1,6 +1,13 @@
 
-<!-- Hero -->
-![LOGO](./images/logo.svg)
+<p align="center">
+  <img src="./images/logo.svg" alt="Poyraz CNPG GUI" width="120">
+</p>
+
+<h1 align="center">Poyraz CNPG GUI</h1>
+
+<p align="center">
+  <strong>Poyraz Cnpg Gui - Postgresql Management UI</strong>
+</p>
 
 # CNPG — PostgreSQL Management UI
 
