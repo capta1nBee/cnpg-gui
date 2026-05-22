@@ -138,10 +138,4 @@ Overview of the UI (screenshots taken from `images/`):
 - Fork and open a pull request.
 - Coding standards: Java 17 for backend, Node.js 18+ for frontend.
 
----
-
-If you'd like, I can also:
-- produce a GitHub Actions CI workflow that builds and pushes images,
-- create a Helm chart for parameterized deployments,
-- or translate this README back into Turkish as well.
 
