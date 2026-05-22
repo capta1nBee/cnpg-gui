@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: REPO/cnpg-gui-frontend:latest
+        image: ghcr.io/capta1nbee/cnpg-gui/frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
