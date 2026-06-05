@@ -1017,7 +1017,7 @@ public class ClusterService {
         }
     }
 
-    // ===== TASK 3: S3 Credentials Decode =====
+    
     public Map<String, String> getS3Credentials(UUID environmentId, String namespace, String clusterName) {
         log.info("Fetching S3 credentials for cluster {} in namespace {}", clusterName, namespace);
         try {
@@ -1049,7 +1049,7 @@ public class ClusterService {
         }
     }
 
-    // ===== TASK 4: Bootstrap Credentials Decode =====
+    
     public Map<String, String> getBootstrapCredentials(UUID environmentId, String namespace, String clusterName) {
         log.info("Fetching bootstrap credentials for cluster {} in namespace {}", clusterName, namespace);
         try {
@@ -1081,7 +1081,7 @@ public class ClusterService {
         }
     }
 
-    // ===== TASK 2: Get Pooler CRD for Cluster =====
+    
     @SuppressWarnings("unchecked")
     public Map<String, Object> getPoolerForCluster(UUID environmentId, String namespace, String clusterName) {
         log.info("Fetching Pooler CRD for cluster {} in namespace {}", clusterName, namespace);
@@ -1152,7 +1152,7 @@ public class ClusterService {
         }
     }
 
-    // ===== TASK 5: Enhanced User List with decoded secrets + managed roles =====
+    
     @SuppressWarnings("unchecked")
     public Map<String, Object> getClusterUsersAndRoles(UUID environmentId, String namespace, String clusterName) {
         log.info("Fetching users and roles for cluster {} in namespace {}", clusterName, namespace);
