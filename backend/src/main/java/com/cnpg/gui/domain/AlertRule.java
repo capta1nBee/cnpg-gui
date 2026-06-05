@@ -3,7 +3,6 @@ package com.cnpg.gui.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.UUID;
-
 @Data
 @Entity
 @Table(name = "alert_rules")
