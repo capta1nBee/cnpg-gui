@@ -254,7 +254,7 @@ public class ClusterController {
                 .body(stream);
     }
 
-    // ===== TASK 3: S3 Credentials Decode Endpoint =====
+    
     @GetMapping("/{namespace}/{name}/s3-credentials")
     @PreAuthorize("hasAnyRole('SUPERADMIN', 'ADMIN')")
     public ResponseEntity<Map<String, String>> getS3Credentials(
@@ -264,7 +264,7 @@ public class ClusterController {
         return ResponseEntity.ok(clusterService.getS3Credentials(environmentId, namespace, name));
     }
 
-    // ===== TASK 4: Bootstrap Credentials Decode Endpoint =====
+    
     @GetMapping("/{namespace}/{name}/bootstrap-credentials")
     @PreAuthorize("hasAnyRole('SUPERADMIN', 'ADMIN')")
     public ResponseEntity<Map<String, String>> getBootstrapCredentials(
@@ -274,7 +274,7 @@ public class ClusterController {
         return ResponseEntity.ok(clusterService.getBootstrapCredentials(environmentId, namespace, name));
     }
 
-    // ===== TASK 2: Pooler CRD Endpoint =====
+    
     @GetMapping("/{namespace}/{name}/pooler")
     @PreAuthorize("hasAnyRole('SUPERADMIN', 'ADMIN', 'VIEWER')")
     public ResponseEntity<Map<String, Object>> getPooler(
@@ -284,7 +284,7 @@ public class ClusterController {
         return ResponseEntity.ok(clusterService.getPoolerForCluster(environmentId, namespace, name));
     }
 
-    // ===== TASK 5: Enhanced Users & Roles Endpoint =====
+    
     @GetMapping("/{namespace}/{name}/users-roles")
     @PreAuthorize("hasAnyRole('SUPERADMIN', 'ADMIN', 'VIEWER')")
     public ResponseEntity<Map<String, Object>> getClusterUsersAndRoles(
